@@ -24,4 +24,3 @@ class ViewController: UIViewController {
 		webView.load(URLRequest(url: URL(string: "http://localhost:3000")!))
 	}
 }
-
