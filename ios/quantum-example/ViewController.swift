@@ -2,14 +2,12 @@
 //  ViewController.swift
 //  quantum-example
 //
-//  Created by Erik Sargent on 9/12/24.
+//  Created by Sean Hill on 9/12/24.
 //
 
 import UIKit
 import WebKit
-
 import QuantumIOS
-
 
 class ViewController: UIViewController {
 	@IBOutlet weak var webView: WKWebView!
