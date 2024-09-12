@@ -1,2 +1,27 @@
+# Xcode
 .DS_Store
-ios/quantum-example.xcodeproj/project.xcworkspace/xcuserdata/*
+DerivedData/
+build/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+
+# App packaging
+ios/*.xcuserstate
+ios/*.xcworkspace/
+ios/!default.xcworkspace
+ios/*.xcodeproj/
+ios/!*.pbxproj
+
+# iOS/OSX build generated
+ios/*.ipa
+ios/*.dSYM.zip
+ios/*.dSYM
+
+# Swift Package Manager
+/.build/
+/Packages/
+/Package.pins
+.swiftpm/xcode/package.xcworkspace/
