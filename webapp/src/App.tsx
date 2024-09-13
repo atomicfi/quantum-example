@@ -82,8 +82,4 @@ const authenticatedStyle = {
   zIndex: 1
 }
 
-const linkStyle = {
-  color: '#ADD8E6'
-}
-
 export default App

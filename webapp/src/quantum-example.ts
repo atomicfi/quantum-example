@@ -1,4 +1,4 @@
-import { Quantum, QuantumPage } from '@atomicfi/quantum-js'
+import { Quantum, QuantumPage, AuthStatus } from '@atomicfi/quantum-js'
 
 export async function initializeQuantum({
   onAuthenticated
@@ -11,17 +11,17 @@ export async function initializeQuantum({
 
   await page.addUserScript(_demoCredentialsScript)
   await page.on('dispatch', _dispatchListener({ page, onAuthenticated }))
-
   await page.show()
 
-  await page.authenticate(startURL, async (page) => {
+  const status = await page.authenticate(startURL, async (page) => {
     const url = await page.url()
     return !!url?.includes('/browse')
   })
 
-  onAuthenticated()
-
-  await page.hide()
+  if (status === AuthStatus.Authenticated) {
+    onAuthenticated()
+    await page.hide()
+  }
 }
 
 function _dispatchListener({
