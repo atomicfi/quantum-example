@@ -43,7 +43,7 @@ function _dispatchListener({
 const _demoCredentialsScript = `
   window.demoInterval = setInterval(() => {
     const demoCredentialsWereUsed = Array.from(document.querySelectorAll('input')).some(input =>
-        input.value?.toLowerCase()?.includes('test-good') || input.value?.toLowerCase()?.includes('test-feels-so-good')
+        input.value?.toLowerCase()?.includes('test-good')
     )
     
     if (demoCredentialsWereUsed) {
