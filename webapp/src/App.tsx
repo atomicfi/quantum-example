@@ -1,24 +1,14 @@
 import React, { useState } from 'react'
 import './App.css'
-import { Quantum } from '@atomicfi/quantum-js'
+import { initializeQuantum } from './quantum-example'
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
 
-  async function initializeQuantum() {
-    const { page } = await Quantum.launch()
-    const startURL = 'https://mocky.atomicfi.com'
-
-    await page.show()
-
-    await page.authenticate(startURL, async (page) => {
-      const url = await page.url()
-      return !!url?.includes('/profile')
+  async function launch() {
+    await initializeQuantum({
+      onAuthenticated: () => setAuthenticated(true)
     })
-
-    setAuthenticated(true)
-
-    await page.hide()
   }
 
   return (
@@ -29,7 +19,7 @@ function App() {
             <p>Example using QuantumJS</p>
             <small>Use `test-good` for your username to authenticate.</small>
           </header>
-          <button onClick={initializeQuantum} style={buttonStyle}>
+          <button onClick={launch} style={buttonStyle}>
             Launch
           </button>
         </div>
