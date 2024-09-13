@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import './App.css'
 import { initializeQuantum } from './quantum-example'
+import confetti from 'canvas-confetti'
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
 
   async function launch() {
     await initializeQuantum({
-      onAuthenticated: () => setAuthenticated(true)
+      onAuthenticated: () => {
+        setAuthenticated(true)
+        confetti()
+      }
     })
   }
 
@@ -25,18 +29,12 @@ function App() {
         </div>
       ) : (
         <div className="Authenticated" style={authenticatedStyle}>
-          <p>You are authenticated!</p>
-          <p>
-            Please refer to the{' '}
-            <a
-              href="https://github.com/atomicfi/quantum-js"
-              target="_blank"
-              style={linkStyle}
-            >
-              QuantumJS
-            </a>{' '}
-            documentation for further usage.
-          </p>
+          <header className="App-header">
+            <p>You are authenticated!</p>
+            <small>
+              Please refer to the QuantumJS documentation for further usage.
+            </small>
+          </header>
         </div>
       )}
     </div>
@@ -70,7 +68,12 @@ const buttonStyle = {
 }
 
 const authenticatedStyle = {
-  padding: 20
+  display: 'flex',
+  flexDirection: 'column' as 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh',
+  textAlign: 'center' as 'center'
 }
 
 const linkStyle = {
