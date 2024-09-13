@@ -17,6 +17,7 @@ function App() {
 
   return (
     <div className="App" style={appStyle}>
+      <div className="gradient-bg"></div>
       {!authenticated ? (
         <div className="Launch" style={launchStyle}>
           <header className="App-header">
@@ -43,8 +44,9 @@ function App() {
 
 const appStyle = {
   height: '100vh',
-  background: 'linear-gradient(#111, #555)',
-  color: 'white'
+  color: 'white',
+  position: 'relative' as 'relative',
+  overflow: 'hidden'
 }
 
 const launchStyle = {
@@ -53,7 +55,9 @@ const launchStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
-  textAlign: 'center' as 'center'
+  textAlign: 'center' as 'center',
+  position: 'relative' as 'relative',
+  zIndex: 1
 }
 
 const buttonStyle = {
@@ -73,7 +77,9 @@ const authenticatedStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
-  textAlign: 'center' as 'center'
+  textAlign: 'center' as 'center',
+  position: 'relative' as 'relative',
+  zIndex: 1
 }
 
 const linkStyle = {
