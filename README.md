@@ -10,7 +10,7 @@ This repo provides examples of how to integrate the native SDKs and the web laye
 
 ## Getting Started
 
-Reach out to AtomicFI to request access to the QuantumJS and MuppetJS respositories. Create a personal access token in Github that will be used to install the Atomic packages. Add this PAT to your shell profile as `ATOMIC_PACKAGES_TOKEN`.
+Reach out to AtomicFI to request access to the QuantumJS and MuppetJS respositories. Create a personal access token in Github that uses the `read:packages` scope. This token will be used to install the Atomic packages. Add this PAT to your shell profile as `ATOMIC_PACKAGES_TOKEN`.
 
 ### Web Application
 ```shell
