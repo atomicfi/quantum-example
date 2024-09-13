@@ -7,3 +7,17 @@ There are two packages required to use Quantum:
 2. [QuantumJS](https://github.com/atomicfi/quantum-js)
 
 This repo provides examples of how to integrate the native SDKs and the web layer that allows Quantum to function.
+
+## Getting Started
+
+Reach out to AtomicFI to request access to the QuantumJS and MuppetJS respositories. Create a personal access token in Github that will be used to install the Atomic packages. Add this PAT to your shell profile as `ATOMIC_PACKAGES_TOKEN`.
+
+### Web Application
+```shell
+$ cd webapp
+$ npm install
+$ npm run start
+```
+
+### iOS Application
+Open `ios/quantum-example/quantum-example.xcodeproj` and run the project.
