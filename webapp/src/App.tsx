@@ -22,10 +22,13 @@ function App() {
         <div className="Launch" style={launchStyle}>
           <header className="App-header">
             <p>Example using QuantumJS</p>
-            <small>Use `test-good` for your username to authenticate.</small>
+            <small>
+              To simulate an authentication use <code>test-good</code> as your
+              username.
+            </small>
           </header>
           <button onClick={launch} style={buttonStyle}>
-            Launch
+            Login to Netflix
           </button>
         </div>
       ) : (
@@ -61,7 +64,7 @@ const launchStyle = {
 }
 
 const buttonStyle = {
-  backgroundColor: '#3f51b5',
+  backgroundColor: 'rgba(255, 255, 255, 0.2)',
   color: 'white',
   padding: '10px 20px',
   border: 'none',
