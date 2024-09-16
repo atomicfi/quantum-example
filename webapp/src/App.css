@@ -1,3 +1,7 @@
+p {
+  margin-top: 0;
+}
+
 .gradient-bg {
   position: absolute;
   top: 0;
