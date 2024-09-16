@@ -36,7 +36,9 @@ function App() {
           <header className="App-header">
             <p>You are authenticated!</p>
             <small>
-              Please refer to the QuantumJS documentation for further usage.
+              Please refer to the QuantumJS
+              <br />
+              documentation for further usage.
             </small>
           </header>
         </div>
