@@ -29,7 +29,7 @@ export async function initializeQuantum({
       accounts: [] as any[]
     }
 
-    await _sleep(3000)
+    await page.waitForRequest((url) => url.includes('/GetUser'))
     const userRequest = _getRequestByUrl(page, '/GetUser')
     console.log('Got user')
 
