@@ -5,7 +5,7 @@ export async function initializeQuantum({
 }: {
   onAuthenticated: () => void
 }) {
-  const startURL = 'https://bank.varomoney.com/accounts'
+  const startURL = 'https://bank.varomoney.com/login'
 
   const { page } = await Quantum.launch()
 
