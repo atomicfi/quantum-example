@@ -5,7 +5,7 @@ export async function initializeQuantum({
 }: {
   onAuthenticated: () => void
 }) {
-  const startURL = 'https://www.netflix.com/login'
+  const startURL = 'https://bank.varomoney.com/accounts'
 
   const { page } = await Quantum.launch()
 
@@ -15,7 +15,7 @@ export async function initializeQuantum({
 
   const status = await page.authenticate(startURL, async (page) => {
     const url = await page.url()
-    return !!url?.includes('/browse')
+    return !!url?.includes('/accounts')
   })
 
   if (status === AuthStatus.Authenticated) {

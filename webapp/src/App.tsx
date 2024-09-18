@@ -23,12 +23,12 @@ function App() {
           <header className="App-header">
             <p>Example using QuantumJS</p>
             <small>
-              To simulate an authentication use <code>test-good</code> as your
-              username.
+              To simulate an authentication you can use <code>test-good</code>{' '}
+              as your username.
             </small>
           </header>
           <button onClick={launch} style={buttonStyle}>
-            Login to Netflix
+            Login to Varo
           </button>
         </div>
       ) : (
@@ -60,6 +60,8 @@ const launchStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
+  paddingLeft: '50px',
+  paddingRight: '50px',
   textAlign: 'center' as 'center',
   position: 'relative' as 'relative',
   zIndex: 1
