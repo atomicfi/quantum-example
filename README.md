@@ -3,6 +3,7 @@
 Quantum is a framework to manage Atomic's [TrueAuth](https://www.trueauth.com/) technology. With Quantum, you can create and manage your own TrueAuth browsers.
 
 There are two packages required to use Quantum:
+
 1. Either [QuantumIOS](https://github.com/atomicfi/quantum-ios) or QuantumAndroid
 2. [QuantumJS](https://github.com/atomicfi/quantum-js)
 
@@ -18,4 +19,13 @@ $ npm install
 
 # To run the iOS Example
 $ npm run start:ios
+```
+
+## Local Development
+
+If you are working in your own web application project, you'll need to add a `.npmrc` file in order to install the QuantumJS package:
+
+```
+@atomicfi:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${ATOMIC_PACKAGES_TOKEN}
 ```
