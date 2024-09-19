@@ -1,4 +1,4 @@
-import { Quantum, QuantumPage, AuthStatus } from '@atomicfi/quantum-js'
+import { Quantum, QuantumPage, AuthStatus, Request } from '@atomicfi/quantum-js'
 
 export async function initializeQuantum({
   onAuthenticated
@@ -29,16 +29,20 @@ export async function initializeQuantum({
       accounts: [] as any[]
     }
 
-    await page.waitForRequest((url) => url.includes('/GetUser'))
-    const userRequest = _getRequestByUrl(page, '/GetUser')
-    console.log('Got user')
+    await page.waitForRequest((request: Request) =>
+      request.url.includes('/GetUser')
+    )
+
+    const userRequest = _getRequest(page, (request) =>
+      request.url.includes('/GetUser')
+    )
 
     const {
       email,
       phone,
       accounts,
       customerInfo: { dateOfBirth, name, address }
-    } = userRequest?.request?.response?.data.data.user
+    } = userRequest.response?.data.data.user
 
     aggregation.identity.firstName = name.first
     aggregation.identity.lastName = name.last
@@ -53,43 +57,58 @@ export async function initializeQuantum({
 
     for (const account of accounts) {
       await page.goto(`https://bank.varomoney.com/accounts/${account.id}`)
-      await _sleep(2000)
+      await page.waitForRequest(
+        (request: Request) =>
+          request.url.includes('/GetAccountR2') &&
+          request.data.variables.id === account.id
+      )
 
-      const accountNumberRequest = _getRequestByUrl(page, '/GetAccountR2')
-
+      const accountRequest = _getRequest(page, (request) =>
+        request.url.includes('/GetAccountR2')
+      )
+      await page.waitForSelector('[aria-label="manage account"]')
       await page.evaluate(() =>
         // @ts-ignore
         document.querySelector('[aria-label="manage account"]')?.click()
       )
 
-      await _sleep(2000)
-
-      const accountNumberDataRequest = _getRequestByUrl(
-        page,
-        '/GetAccountNumber'
+      await page.waitForRequest(
+        (request: Request) =>
+          request.url.includes('/GetAccountNumber') &&
+          request.data.variables.id === account.id
       )
 
-      const transactionalDataRequest = _getRequestByUrl(
-        page,
-        '/SmartLedgerComponents'
+      const accountNumberDataRequest = _getRequest(page, (request) =>
+        request.url.includes('/GetAccountNumber')
       )
 
-      console.log('Transaction:', transactionalDataRequest)
+      await page.waitForRequest(
+        (request: Request) =>
+          request.url.includes('/SmartLedgerComponents') &&
+          request.data.variables.accountId === account.id
+      )
+
+      const transactionalDataRequest = _getRequest(
+        page,
+        (request) =>
+          request.url.includes('/SmartLedgerComponents') &&
+          request.data.variables.accountId === account.id
+      )
 
       const { product, name, routingNumber, totalBalance, availableBalance } =
-        accountNumberRequest.request?.response?.data.data.accountR2
+        accountRequest.response?.data.data.accountR2
 
       aggregation.accounts.push({
         type: product.toLowerCase(),
         title: name,
         accountNumber:
-          accountNumberDataRequest?.request?.response?.data?.data.accountR2
+          accountNumberDataRequest.response?.data?.data.accountR2
             .fullAccountNumber,
         routingNumber,
         availableBalance: availableBalance.amount,
         totalBalance: totalBalance.amount,
         transactions:
-          transactionalDataRequest?.request?.response?.data?.data.smartLedgerComponents.children[0]?.children.map(
+          transactionalDataRequest.response?.data?.data.smartLedgerComponents.children[0]?.children.map(
             (transaction: any) => ({
               description: transaction.primaryText.copy,
               amount: transaction.primaryDetail.copy,
@@ -103,11 +122,11 @@ export async function initializeQuantum({
   }
 }
 
-function _getRequestByUrl(page: QuantumPage, urlMatch: string) {
-  return page
-    .getRequests()
-    .reverse()
-    .filter((request) => request?.request?.url.includes(urlMatch))[0]
+function _getRequest(
+  page: QuantumPage,
+  matcher: (request: Request) => boolean
+) {
+  return page.getRequests().reverse().filter(matcher)[0]
 }
 
 async function _sleep(time: number) {
