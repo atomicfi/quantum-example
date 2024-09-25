@@ -66,11 +66,7 @@ export async function initializeQuantum({
       const accountRequest = _getRequest(page, (request) =>
         request.url.includes('/GetAccountR2')
       )
-      await page.waitForSelector('[aria-label="manage account"]')
-      await page.evaluate(() =>
-        // @ts-ignore
-        document.querySelector('[aria-label="manage account"]')?.click()
-      )
+      await page.click('[aria-label="manage account"]')
 
       await page.waitForRequest(
         (request: Request) =>
