@@ -1,54 +1,36 @@
-import { Quantum, QuantumPage, AuthStatus } from '@atomicfi/quantum-js'
+import { Quantum } from '@atomicfi/quantum-js'
 
-export async function initializeQuantum({
-  onAuthenticated
-}: {
-  onAuthenticated: () => void
-}) {
-  const startURL = 'https://bank.varomoney.com/login'
-
+export async function initializeQuantum() {
   const { page } = await Quantum.launch()
 
-  await page.addUserScript(_demoCredentialsScript)
-  await page.on('dispatch', _dispatchListener({ page, onAuthenticated }))
+  // Setup listener for iframe messages
+  await page.addUserScript(_getIframeScript())
   await page.show()
 
-  const status = await page.authenticate(startURL, async (page) => {
-    const url = await page.url()
-    return !!url?.includes('/accounts')
-  })
+  await page.goto(
+    'https://iframetester.com/?url=https://www.youtube.com/embed/27PHT9K8izo?si=NhJ31C-K5aqRFSVM'
+  )
 
-  if (status === AuthStatus.Authenticated) {
-    onAuthenticated()
-    await page.hide()
-  }
-}
+  await new Promise((resolve) => setTimeout(resolve, 3000))
 
-function _dispatchListener({
-  page,
-  onAuthenticated
-}: {
-  page: QuantumPage
-  onAuthenticated: () => void
-}) {
-  return (event: any) => {
-    switch (event.detail.data?.type) {
-      case 'demo-auth':
-        onAuthenticated()
-        return page.hide()
-    }
-  }
-}
-
-const _demoCredentialsScript = `
-  window.demoInterval = setInterval(() => {
-    const demoCredentialsWereUsed = Array.from(document.querySelectorAll('input')).some(input =>
-        input.value?.toLowerCase()?.includes('test-good')
+  // Click the share button
+  await page.evaluate(() => {
+    const frame = document.querySelector('#iframe-window') as HTMLIFrameElement
+    frame.contentWindow?.postMessage(
+      { type: 'click', selector: '[title="More"]' },
+      '*'
     )
-    
-    if (demoCredentialsWereUsed) {
-      clearInterval(window.demoInterval)
-      MuppetPage.dispatch({ type: 'demo-auth' })
-    }
-  }, 2000)
-`
+  })
+}
+
+const _getIframeScript = () => {
+  const script = () => {
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'click') {
+        document.querySelector(event.data.selector)?.click()
+      }
+    })
+  }
+
+  return `(${script.toString()})()`
+}

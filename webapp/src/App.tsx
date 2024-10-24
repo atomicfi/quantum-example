@@ -7,12 +7,7 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false)
 
   async function launch() {
-    await initializeQuantum({
-      onAuthenticated: () => {
-        setAuthenticated(true)
-        confetti()
-      }
-    })
+    await initializeQuantum()
   }
 
   return (
