@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/atomicfi/quantum-ios",
       "state" : {
-        "revision" : "431d3b1d424e90146329d530de49b640763d29aa",
-        "version" : "3.6.2"
+        "revision" : "f4bf0a343cd2bbd151cf3965d6d46bf260c69fdf",
+        "version" : "3.9.8"
       }
     }
   ],
