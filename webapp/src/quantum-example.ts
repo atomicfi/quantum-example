@@ -3,7 +3,7 @@ import { Quantum, QuantumPage, AuthStatus } from '@atomicfi/quantum-js'
 export async function initializeQuantum({
   onAuthenticated
 }: {
-  onAuthenticated: () => void
+  onAuthenticated: (status: string) => void
 }) {
   const startURL = 'https://bank.varomoney.com/login'
 
@@ -13,15 +13,17 @@ export async function initializeQuantum({
   await page.on('dispatch', _dispatchListener({ page, onAuthenticated }))
   await page.show()
 
-  const status = await page.authenticate(startURL, async (page) => {
-    const url = await page.url()
-    return !!url?.includes('/accounts')
-  })
+  const status = await page.authenticate(
+    startURL,
+    async (page) => {
+      const url = await page.url()
+      return !!url?.includes('/accounts')
+    },
+    { timeout: 300000 }
+  )
 
-  if (status === AuthStatus.Authenticated) {
-    onAuthenticated()
-    await page.hide()
-  }
+  onAuthenticated(status)
+  await page.hide()
 }
 
 function _dispatchListener({
@@ -29,12 +31,12 @@ function _dispatchListener({
   onAuthenticated
 }: {
   page: QuantumPage
-  onAuthenticated: () => void
+  onAuthenticated: (status: string) => void
 }) {
   return (event: any) => {
     switch (event.detail.data?.type) {
       case 'demo-auth':
-        onAuthenticated()
+        onAuthenticated(AuthStatus.Authenticated)
         return page.hide()
     }
   }

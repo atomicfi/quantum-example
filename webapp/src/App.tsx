@@ -1,16 +1,22 @@
 import React, { useState } from 'react'
 import './App.css'
 import { initializeQuantum } from './quantum-example'
+import { AuthStatus } from '@atomicfi/quantum-js'
 import confetti from 'canvas-confetti'
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
+  const [status, setStatus] = useState('')
 
   async function launch() {
     await initializeQuantum({
-      onAuthenticated: () => {
-        setAuthenticated(true)
-        confetti()
+      onAuthenticated: (status) => {
+        if (status === AuthStatus.Authenticated) {
+          setAuthenticated(true)
+          confetti()
+        } else {
+          setStatus(status)
+        }
       }
     })
   }
@@ -18,7 +24,17 @@ function App() {
   return (
     <div className="App" style={appStyle}>
       <div className="gradient-bg"></div>
-      {!authenticated ? (
+      {status && !authenticated ? (
+        <div className="Launch" style={launchStyle}>
+          <header className="App-header">
+            <p>Authentication Status: {status}</p>
+            <small>Please try again</small>
+          </header>
+          <button onClick={launch} style={buttonStyle}>
+            Retry Login
+          </button>
+        </div>
+      ) : !authenticated ? (
         <div className="Launch" style={launchStyle}>
           <header className="App-header">
             <p>Example using QuantumJS</p>
