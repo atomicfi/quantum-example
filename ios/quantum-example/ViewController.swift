@@ -16,6 +16,7 @@ class ViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		webView.isInspectable = true
 		
 		// Initialize a quantum instance
 		let quantum = Quantum()
@@ -26,7 +27,8 @@ class ViewController: UIViewController {
 			// 2. A UIViewController to present the browsers on top of
 			// The WebView could be an existing web application you present to your users inside of your native app
 			// or a hidden WebView that is used to house a web application that uses quantum-js to manage browsers
-			try await quantum.initialize(view: webView, controller: self)
+			let quantumToken = "YOUR_TOKEN_PROVIDED_FROM_ATOMIC"
+			try await quantum.initialize(token: quantumToken, view: webView, controller: self)
 			
 			// If you haven't already navigated your webView to your website you can use quantum to do so
 			let success = try await quantum.goto(url: "http://localhost:3000")

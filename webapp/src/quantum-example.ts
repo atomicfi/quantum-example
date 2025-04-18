@@ -10,10 +10,14 @@ export async function initializeQuantum({
   const { page } = await Quantum.launch()
   await page.show()
 
-  const status = await page.authenticate(startURL, async (page) => {
-    const url = await page.url()
-    return !!url?.includes('/accounts')
-  })
+  const status = await page.authenticate(
+    startURL,
+    async (page) => {
+      const url = await page.url()
+      return !!url?.includes('/accounts')
+    },
+    { timeout: 5000000 }
+  )
 
   if (status === AuthStatus.Authenticated) {
     onAuthenticated()
